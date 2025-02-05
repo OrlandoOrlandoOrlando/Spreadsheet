@@ -12,18 +12,21 @@ public class CSV extends IR {
     public CSV(String filePath) throws FileNotFoundException {
         var fis = new FileInputStream(filePath);
         byte[] buff = new byte[1024];
+        // subscripts of table
+        int row = 0, column = 0;
         var sb = new StringBuilder();
 
-        // TODO define setTable in IR super class
         try {
             while(fis.read(buff) > -1)
                 for(byte b : buff) {
-                    if(b == ',') {
-                        // setTable(sb.toString());
+                    if (b == ',') {
+                        setTable(row, column, sb.toString());
                         sb.setLength(0);
+                        column++;
                     } else if (b == '\n') {
-                        // setTable(sb.toString);
+                        setTable(row, column, sb.toString());
                         sb.setLength(0);
+                        row++;
                     } else
                         sb.append((char) b);
                 }
